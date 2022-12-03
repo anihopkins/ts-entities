@@ -1,1 +1,12 @@
-export { Entity, Copy, Compare, Copyable, EntityField, EntityInterface } from './decorators'
+export {
+  Entity,
+  Copy,
+  Compare,
+  Copyable,
+  EntityField,
+  EntityInterface,
+  ParameterDecorator,
+  PropertyDecorator,
+  Constructable
+} from './decorators'
+
