@@ -1,0 +1,25 @@
+{
+  "name": "ts-entities",
+  "version": "0.0.1",
+  "description": "Comparable, Copyable Entities in TypeScript",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "rm -rf dist && npx tsc && node dist/index.js"
+  },
+  "keywords": [
+    "Entities",
+    "TypeScript",
+    "Code generation"
+  ],
+  "author": "Ani Hopkins",
+  "license": "ISC",
+  "dependencies": {
+    "reflect-metadata": "0.1.13"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.2",
+    "typescript": "4.9.3",
+    "typedoc": "0.23.21"
+  }
+}
