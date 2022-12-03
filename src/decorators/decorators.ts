@@ -10,10 +10,10 @@ import {
   verifyCopyable
 } from './utils';
 
-type PropertyDecorator = (target: Object, propertyKey: string|symbol) => void;
-type ParameterDecorator = (target: any, argName: string | symbol, index: number) => void;
+export type PropertyDecorator = (target: Object, propertyKey: string|symbol) => void;
+export type ParameterDecorator = (target: any, argName: string | symbol, index: number) => void;
 
-type Constructable = { new (...args: any[]): {} };
+export type Constructable = { new (...args: any[]): {} };
 
 /**
  * Class annotation - Extends the functionality of a class to ensure that it

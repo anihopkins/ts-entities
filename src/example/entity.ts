@@ -1,4 +1,4 @@
-import { Copy, Entity, EntityField, EntityInterface } from "./decorators";
+import { Copy, Entity, EntityField, EntityInterface } from "../decorators";
 
 export type OptionalOrNothing<T> = T | null | undefined;
 export type GenderMarker = 'M' | 'F' | 'X';

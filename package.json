@@ -4,6 +4,7 @@
   "description": "Comparable, Copyable Entities in TypeScript",
   "main": "dist/index.js",
   "scripts": {
+    "generate-docs": "rm -rf docs && node_modules/.bin/typedoc --options typedoc.json",
     "test": "echo \"Error: no test specified\" && exit 1",
     "run": "rm -rf dist && npx tsc && node dist/index.js"
   },
