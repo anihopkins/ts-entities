@@ -2,10 +2,8 @@
 name: Deploy static content to Pages
 
 on:
-  workflow_run:
-    workflows: [Generate docs with TypeDoc]
-    types:
-      - completed
+  push:
+    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
