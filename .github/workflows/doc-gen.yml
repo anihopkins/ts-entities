@@ -32,7 +32,6 @@ jobs:
         
         author_name: DocBuilder
         author_email: ani.d.hopkins@gmail.com=
-        cwd: '/home/runner/work/ts-entities/ts-entities'
 
         # Determines the way the action fills missing author name and email. Three options are available:
         # - github_actor -> UserName <UserName@users.noreply.github.com>
