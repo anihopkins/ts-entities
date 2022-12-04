@@ -31,7 +31,7 @@ jobs:
         add: 'docs'
         
         author_name: DocBuilder
-        author_email: ani.d.hopkins@gmail.com=
+        author_email: ani.d.hopkins@gmail.com
 
         # Determines the way the action fills missing author name and email. Three options are available:
         # - github_actor -> UserName <UserName@users.noreply.github.com>
@@ -49,6 +49,7 @@ jobs:
         # - exitAtEnd -> the action will go on, every pathspec error will be logged at the end, the step will fail.
         # Default: ignore
         pathspec_error_handling: ignore
+        new-branch: updated-docs
 
         push: true
 
