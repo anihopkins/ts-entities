@@ -41,6 +41,7 @@ jobs:
         default_author: github_actor
         
         fetch: true
+        pull: true
         message: 'Committing new docs'
         
         # The way the action should handle pathspec errors from the add and remove commands. Three options are available:
@@ -52,7 +53,3 @@ jobs:
         new_branch: updated-docs
 
         push: true
-
-        # Arguments for the git tag command (the tag name always needs to be the first word not preceded by an hyphen)
-        # Default: ''
-        tag: 'doc-generator'
