@@ -22,15 +22,36 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Generate docs
+      run: |
+        npm install
+        npm run generate-docs
+        
   # Single deploy job since we're just deploying
   deploy:
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+#       - name: Checkout
+#         uses: actions/checkout@v3
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
