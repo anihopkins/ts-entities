@@ -1,10 +1,12 @@
-import { Person } from './entity';
+import { GenderMarker, Person } from './entity';
 
-const name = 'Alexandra';
-const age = 52
-const gender = 'F'
+const name = 'Noemi';
+const age = 20;
+const genders: GenderMarker[] = ['F', 'X'];
 
-const alexandra = Person.of(name, age, gender);
-const alexandraHenson = Person.of('Alexandra', 52, 'F');
+const noemi = Person.of(name, age, genders);
+const noemi2 = Person.of(name, age, genders);
+const katie = Person.of('Katie', 30, <GenderMarker[]>['F']);
 
-console.log(alexandra.copy().isEqual(alexandraHenson));
+console.log(noemi.isEqual(noemi2.copy())); // true
+console.log(noemi.isEqual(katie)); // false

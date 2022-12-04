@@ -1,4 +1,4 @@
-import { Copy, Entity, EntityField, EntityInterface } from "../decorators";
+import { Copy, Entity, EntityField, EntityInterface } from '../decorators';
 
 export type OptionalOrNothing<T> = T | null | undefined;
 export type GenderMarker = 'M' | 'F' | 'X';
@@ -12,18 +12,22 @@ export class Person {
   readonly age: Optional<number>;
 
   @EntityField()
-  readonly gender: Optional<GenderMarker>;
+  readonly genders: Optional<GenderMarker>[];
 
   constructor(@Copy('name') name: string,
               @Copy('age') age: Optional<number>,
-              @Copy('gender') gender: Optional<GenderMarker>) {
+              @Copy('genders') genders: Optional<GenderMarker>[]) {
     this.name = name;
     this.age = age;
-    this.gender = gender;
+    this.genders = genders;
   }
 
-  static of(name: string, age?: OptionalOrNothing<number>, gender?: OptionalOrNothing<GenderMarker>) {
-    return new Person(name, Optional.of(age), Optional.of(gender));
+  static of(name: string,
+            age?: OptionalOrNothing<number>,
+            genders?: OptionalOrNothing<GenderMarker[]>) {
+    genders = genders ? genders : [];
+
+    return new Person(name, Optional.of(age), genders.map(Optional.of));
   }
 }
 
@@ -40,14 +44,10 @@ export class Optional<T> {
     this.value = value;
   }
 
-  isEmpty(): boolean {
-    return this.value === null;
-  }
-
   static of<T>(value?: OptionalOrNothing<T>) {
     return new Optional<T>(value);
   }
 }
 
-export interface Optional<T> extends EntityInterface<T> {}
+export interface Optional<T> extends EntityInterface<Optional<T>> {}
 export interface Person extends EntityInterface<Person> {}

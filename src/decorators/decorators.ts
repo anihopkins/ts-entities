@@ -3,17 +3,15 @@ import {
   comparableMetadataKey,
   copyArgsMetadataKey,
   copyMetadataKey,
-  copyParamSort, entityMetadataKey,
+  entityMetadataKey,
+  copyParamSort,
   getCopyArgs,
   isComparable,
-  isCopyable, isEntity,
+  isCopyable,
+  isEntity,
   verifyCopyable
 } from './utils';
-
-export type PropertyDecorator = (target: Object, propertyKey: string|symbol) => void;
-export type ParameterDecorator = (target: any, argName: string | symbol, index: number) => void;
-
-export type Constructable = { new (...args: any[]): {} };
+import { Constructable, ParameterDecorator, PropertyDecorator } from './types';
 
 /**
  * Class annotation - Extends the functionality of a class to ensure that it
@@ -30,6 +28,29 @@ export type Constructable = { new (...args: any[]): {} };
 export function Entity<T extends Constructable>(constructor: T) {
   Reflect.defineMetadata(entityMetadataKey, true, constructor.prototype);
 
+  const areFieldsEqual = (thisValue: any, otherValue: any): boolean => {
+    // If both are entities, compare using `isEqual`
+    if (isEntity(thisValue)) {
+      if (!thisValue.isEqual(otherValue)) {
+        return false;
+      }
+      // If both are primitives, compare using ===
+    } else {
+      if (thisValue !== otherValue) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+  const copyField= (original: any) => {
+    if (!isEntity(original)) {
+      return original;
+    }
+
+    return original.copy();
+  }
+
   /** Implements {@link EntityInterface.isEqual isEqual}. */
   constructor.prototype.isEqual = function<T extends { [key: string]: any }>(this: any, other: T) {
     if (!(other instanceof constructor)) {
@@ -40,20 +61,29 @@ export function Entity<T extends Constructable>(constructor: T) {
 
     for (const property of properties ) {
       if (property in other) {
-        const thisValue = this[property];
-        const otherValue = other[property];
-
-        // If both are entities, compare using `isEqual`
-        if (isEntity(thisValue)) {
-          if (!thisValue.isEqual(otherValue)) {
+        if (Array.isArray(this[property])) {
+          if (this[property].length !== other[property].length) {
             return false;
           }
-        // If both are primitives, compare using ===
+
+          for (let i = 0; i < this[property].length; i++) {
+            const thisValue = this[property][i];
+            const otherValue = other[property][i];
+
+            if (!areFieldsEqual(thisValue, otherValue)) {
+              return false;
+            }
+          }
         } else {
-          if (thisValue !== otherValue) {
+          const thisValue = this[property];
+          const otherValue = other[property];
+
+          if (!areFieldsEqual(thisValue, otherValue)) {
             return false;
           }
         }
+      } else {
+        return false;
       }
     }
 
@@ -69,11 +99,11 @@ export function Entity<T extends Constructable>(constructor: T) {
     const values = annotatedArguments.map(({ name }) => {
       const thisValue = this[name];
 
-      if (!isEntity(thisValue)) {
-        return thisValue;
+      if (Array.isArray(thisValue)) {
+        return thisValue.map(copyField);
+      } else {
+        return copyField(thisValue);
       }
-
-      return thisValue.copy();
     });
 
     return new constructor(...values);
@@ -84,14 +114,14 @@ export function Entity<T extends Constructable>(constructor: T) {
  * Property annotation - Annotate a class property to indicate that it should
  * be compared with the same property on another instance of the same class when
  * one of the instance's `isEqual()` method is called. Any property not
- * annotated with {@link Compare @Compare} will be ignored when evaluating the
+ * annotated with {@link Comparable @Comparable} will be ignored when evaluating the
  * quality of two instances of the same class.
  *
  * @returns A decorator marking this property as one that should be compared
  *  with the same property on another instance of the same class when checking
  *  whether those instances are equal.
  */
-export function Compare(): PropertyDecorator {
+export function Comparable(): PropertyDecorator {
   return function(target: Object, propertyKey: string|symbol): void {
     Reflect.defineMetadata(comparableMetadataKey, true, target, propertyKey);
   }
@@ -141,16 +171,16 @@ export function Copyable(): PropertyDecorator {
 }
 
 /**
- * A utility decorator that combines the functionality of {@link Compare} and
+ * A utility decorator that combines the functionality of {@link Comparable} and
  * {@link Copyable}. May be used in place of annotating a property as both
- * `Compare()` and `Copyable()`, a common use case for most entities.
+ * `Comparable()` and `Copyable()`, a common use case for most entities.
  *
  * @returns A decorator annotating a property as both used for copying and for
  *  checking equality across entities.
  */
 export function EntityField(): PropertyDecorator {
   return function(target: Object, propertyKey: string|symbol): void {
-    Compare()(target, propertyKey);
+    Comparable()(target, propertyKey);
     Copyable()(target, propertyKey);
   }
 }
@@ -207,25 +237,3 @@ export function Copy(name: string): ParameterDecorator {
   }
 }
 
-/**
- * The interface implemented by all classes annotated with {@link Entity}.
- */
-export interface EntityInterface<T> {
-  /**
-   * Return whether this {@link Entity} is equal to some other value. Returns
-   * false if both are not of the same type. Otherwise, compares all properties
-   * annotated with {@link Compare @Compare}.
-   *
-   * @param other The value against which to compare this {@link Entity}.
-   *
-   * @returns Whether this {@link Entity} is equal to the provided value.
-   */
-  isEqual: (other: any) => boolean;
-
-  /**
-   * Return a copy of this {@link Entity}.
-   *
-   * @returns A copy of this {@link Entity}.
-   */
-  copy: () => T;
-}
