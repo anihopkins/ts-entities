@@ -17,6 +17,20 @@
   <h1>ts-entities 0.0.1</h1>
 </a>
 
+<a href="#table-of-contents" id="table-of-contents" style="color: inherit; text-decoration: none;">
+  <h3>Table of contents</h3>
+</a>
+<ul>
+<li><a href="#what-is-this">What is this?</a></li>
+<li><a href="#usage">Usage</a><ul>
+<li><a href="#notes">Notes</a></li>
+</ul>
+</li>
+<li><a href="#api">API</a></li>
+<li><a href="#contributing">Contributing</a></li>
+<li><a href="#license">License</a></li>
+</ul>
+
 <a href="#what-is-this" id="what-is-this" style="color: inherit; text-decoration: none;">
   <h2>What is this?</h2>
 </a>
@@ -63,10 +77,26 @@ rules (ie. <code>===</code> for non-<code>@Entity</code> elements, <code>isEqual
 shallow-copy non-<code>@Entity</code> fields and <code>copy</code> any <code>@Entity</code> fields, except for
 arrays, where the same rules are applied per-element.</p>
 
-<a href="#api-docs" id="api-docs" style="color: inherit; text-decoration: none;">
-  <h2>API docs</h2>
+<a href="#api" id="api" style="color: inherit; text-decoration: none;">
+  <h2>API</h2>
 </a>
-<p>API documentation can be found here: <a href="https://anihopkins.github.io/ts-entities">API docs</a>.</p>
+<p>This library exposes the following decorators:</p>
+<p><strong>Class decorators</strong></p>
+<ul>
+<li><a href="./docs/functions/Entity.html">@Entity</a></li>
+</ul>
+<p><strong>Member decorators</strong></p>
+<ul>
+<li><a href="./docs/functions/Comparable.html">@Comparable</a></li>
+<li><a href="./docs/functions/Copyable.html">@Copyable</a></li>
+<li><a href="./docs/functions/EntityField.html">@EntityField</a></li>
+</ul>
+<p><strong>Constructor parameter decorators</strong></p>
+<ul>
+<li><a href="./docs/functions/Copy.html">@Copy</a></li>
+</ul>
+<p>Complete API documentation, including all types and interfaces, can be found 
+here: <a href="https://anihopkins.github.io/ts-entities">API docs</a>.</p>
 
 <a href="#contributing" id="contributing" style="color: inherit; text-decoration: none;">
   <h2>Contributing</h2>
