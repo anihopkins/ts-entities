@@ -1,5 +1,13 @@
 # ts-entities 0.0.1
 
+### Table of contents
+* [What is this?](#what-is-this)
+* [Usage](#usage)
+  * [Notes](#notes)
+* [API](#api)
+* [Contributing](#contributing)
+* [License](#license)
+
 ## What is this?
 ts-entities is intended to make dealing with your application data easier, 
 faster, and safer. This library adds decorators that make it quick and easy to 
@@ -174,8 +182,24 @@ rules (ie. `===` for non-`@Entity` elements, `isEqual` for `@Entity` elements).
 shallow-copy non-`@Entity` fields and `copy` any `@Entity` fields, except for
 arrays, where the same rules are applied per-element.
 
-## API docs
-API documentation can be found here: [API docs](https://anihopkins.github.io/ts-entities).
+## API
+This library exposes the following decorators:
+
+**Class decorators**
+
+* [@Entity](./docs/functions/Entity.html)
+
+**Member decorators**
+
+* [@Comparable](./docs/functions/Comparable.html)
+* [@Copyable](./docs/functions/Copyable.html)
+* [@EntityField](./docs/functions/EntityField.html)
+
+**Constructor parameter decorators**
+* [@Copy](./docs/functions/Copy.html)
+
+Complete API documentation, including all types and interfaces, can be found 
+here: [API docs](https://anihopkins.github.io/ts-entities).
 
 ## Contributing
 Pull requests are welcome!
